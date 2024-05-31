@@ -11,19 +11,18 @@
 </div>
 <br/>
 <div align="center">
-  <a target="_blank" href="https://www.buymeacoffee.com/animegasan">
-    <img alt="buymeacoffee" src="https://img.shields.io/badge/buy%20me%20a%20coffee-donation?style=for-the-badge&logo=buymeacoffee&labelColor=black&color=%23FFDD00">
-  </a>
-  <a target="_blank" href="https://www.paypal.com/paypalme/animegasan">
-    <img alt="paypal" src="https://img.shields.io/badge/paypal-donation?style=for-the-badge&logo=paypal&labelColor=black&color=%23003087">
-  </a>
-  <a target="_blank" href="https://saweria.co/animegasan">
-    <img alt="saweria" src="https://img.shields.io/badge/saweria-donation?style=for-the-badge&logo=adobeindesign&labelColor=black&color=%23FFA401">
-  </a>
+  <a target="_blank" href="https://saweria.co/animegasan" alt="Saweria"><img src="https://img.shields.io/badge/saweria-donation?style=for-the-badge&logo=adobeindesign&labelColor=black&color=%23FFA401"></a>
+  <a target="_blank" href="https://www.paypal.com/paypalme/animegasan" alt="PayPal"><img src="https://img.shields.io/badge/paypal-donation?style=for-the-badge&logo=paypal&labelColor=black&color=%23003087"></a>
+  <a target="_blank" href="https://www.buymeacoffee.com/animegasan" alt="BuyMeACoffee"><img src="https://img.shields.io/badge/buy%20me%20a%20coffee-donation?style=for-the-badge&logo=buymeacoffee&labelColor=black&color=%23FFDD00"></a>
 </div>
 <hr/>
 
 DroidNet is an application designed specifically for managing and optimizing network settings on Android modems. With advanced features, DroidNet allows users to have full control over their network connectivity and modem performance, ensuring a better user experience and more stable connections.
+
+## Install via Terminal
+```
+curl -s https://raw.githubusercontent.com/animegasan/luci-app-droidnet/master/install.sh | bash
+```
 
 ## Supported Devices
 - Android version 10 or greater
