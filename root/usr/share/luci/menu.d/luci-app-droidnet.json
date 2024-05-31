@@ -49,9 +49,17 @@
 			"path": "droidnet/log"
 		}
 	},
+	"admin/services/droidnet/qouta": {
+		"title": "Qouta",
+		"order": 6,
+		"action": {
+			"type": "view",
+			"path": "droidnet/qouta"
+		}
+	},
 	"admin/services/droidnet/setting": {
 		"title": "Setting",
-		"order": 6,
+		"order": 7,
 		"action": {
 			"type": "view",
 			"path": "droidnet/setting"
