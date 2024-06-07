@@ -38,7 +38,7 @@ jobs:
       - name: Preparing IPK
         run: |
               echo ""
-              git clone https://github.com/nosignals/luci-app-droidnet
+              git clone https://github.com/Houjie80/luci-app-droidnet
               mkdir feeds artifacts
               cp -rf ./luci-app-droidnet ./feeds
         
