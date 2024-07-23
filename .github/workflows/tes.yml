@@ -43,7 +43,7 @@ jobs:
               cp -rf ./luci-app-droidnet ./feeds
         
       - name: Building IPK
-        uses: nosignals/gh-action-sdk@main
+        uses: Houjie80/gh-action-sdk@main
         env:
           ARCH: ${{ matrix.arch }}-${{ matrix.release }}
           ARTIFACTS_DIR: ${{ github.workspace }}/artifacts
