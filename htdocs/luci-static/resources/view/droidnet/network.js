@@ -163,7 +163,8 @@ return view.extend({
 		return uci.load('droidnet').then(function() {
 			var device = uci.get('droidnet', 'device', 'id');
 			return Promise.all([
-				fs.exec('adb', ['-s', device, 'shell', 'getprop']).then(function(result) {
+				fs.exec('adb', ['-s', device, 'shell', 'getprop'])
+				.then(function(result) {
 					var networkInfo = {};
 					var stderr = result.stderr;
 					var stdout = result.stdout;
@@ -172,8 +173,10 @@ return view.extend({
 						'gsm.network.type': 'signal',
 						'gsm.version.ril-impl': 'driver',
 						'gsm.operator.isroaming': 'roaming',
-						'gsm.sim.operator.numeric': 'mcc'
+						'gsm.sim.operator.numeric': 'mcc',
+						'ro.build.version.release': 'device_version'
 					};
+			
 					if (stderr) {
 						networkInfo['network_section'] = stderr.trim();
 					} else {
@@ -183,7 +186,9 @@ return view.extend({
 								if (lines[i].includes('[' + property + ']')) {
 									var parts = lines[i].split(']: [');
 									var value = parts[1].substring(0, parts[1].length - 1);
-									if (value.includes(',')) {
+									if (!value.includes(',')) {
+										value = [value];
+									} else {
 										value = value.split(',').map(function(item) {
 											return item.trim();
 										});
@@ -227,9 +232,15 @@ return view.extend({
 					if (result && stderr) {
 						ipInfo['ip_section'] = stderr.trim();
 					} else if (result && stdout) {
-						var parts = stdout.trim().split(/\s+/);
-						var value = parts.slice(-1)[0];
-						ipInfo['ip'] = value;
+						var lines = stdout.trim().split('\n');
+						for (var i = 0; i < lines.length; i++) {
+							var parts = lines[i].trim().split(/\s+/);
+							var srcIndex = parts.indexOf('src');
+							if (srcIndex !== -1 && srcIndex + 1 < parts.length) {
+								ipInfo['ip'] = parts[srcIndex + 1];
+								break;
+							};
+						};
 					} else {
 						ipInfo['ip'] = false;
 					};
@@ -283,6 +294,21 @@ return view.extend({
 				}).catch(function(error) {
 					throw new Error(error);
 				}),
+				fs.exec('adb', ['-s', device, 'shell', 'su', '-v']).then(function(result) {
+					var rootInfo = {};
+					var stderr = result.stderr;
+					var stdout = result.stdout;
+					if (stderr) {
+						rootInfo['device_root'] = false;
+					} else if (stdout === '/system/bin/sh: su: not found\n') {
+						rootInfo['device_root'] = false;
+					} else {
+						rootInfo['device_root'] = true;
+					};
+					return rootInfo;
+				}).catch(function(error) {
+					throw new Error(error);
+				})
 			]).then(function(results) {
 				var networkInfo = results[0];
 				var imeisim01Info = results[1];
@@ -290,8 +316,9 @@ return view.extend({
 				var wifiInfo = results[3];
 				var dataInfo = results[4];
 				var airplaneInfo = results[5];
-				if (device && networkInfo && imeisim01Info && ipInfo && wifiInfo && dataInfo && airplaneInfo) {
-					return Object.assign({device: device}, networkInfo, imeisim01Info, ipInfo, wifiInfo, dataInfo, airplaneInfo);
+				var rootInfo = results[6];
+				if (device && networkInfo && imeisim01Info && ipInfo && wifiInfo && dataInfo && airplaneInfo && rootInfo) {
+					return Object.assign({device: device}, networkInfo, imeisim01Info, ipInfo, wifiInfo, dataInfo, airplaneInfo, rootInfo);
 				} else {
 					throw new Error(_('Failed to get complete device information.'));
 				};
